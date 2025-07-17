@@ -107,6 +107,11 @@ export {
   type ConnectionInProgress,
   type NoConnection,
   type NodeConnection,
+  type OnReconnect,
+  type AriaLabelConfig,
+  type SetCenter,
+  type SetViewport,
+  type FitBounds,
 } from '@xyflow/system';
 
 // we need this workaround to prevent a duplicate identifier error

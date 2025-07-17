@@ -1,3 +1,4 @@
+import A11y from '../examples/A11y';
 import Basic from '../examples/Basic';
 import Backgrounds from '../examples/Backgrounds';
 import BrokenNodes from '../examples/BrokenNodes';
@@ -8,6 +9,8 @@ import ControlledViewport from '../examples/ControlledViewport';
 import CustomConnectionLine from '../examples/CustomConnectionLine';
 import CustomMiniMapNode from '../examples/CustomMiniMapNode';
 import CustomNode from '../examples/CustomNode';
+import DefaultEdgeOverwrite from '../examples/DefaultEdgeOverwrite';
+import DefaultNodeOverwrite from '../examples/DefaultNodeOverwrite';
 import DefaultNodes from '../examples/DefaultNodes';
 import DragHandle from '../examples/DragHandle';
 import DragNDrop from '../examples/DragNDrop';
@@ -69,6 +72,11 @@ const routes: IRoute[] = [
     component: AddNodeOnEdgeDrop,
   },
   {
+    name: 'A11y',
+    path: 'a11y',
+    component: A11y,
+  },
+  {
     name: 'Basic',
     path: 'basic',
     component: Basic,
@@ -122,6 +130,16 @@ const routes: IRoute[] = [
     name: 'Custom Node',
     path: 'custom-node',
     component: CustomNode,
+  },
+  {
+    name: 'Default Node Overwrite',
+    path: 'default-node-overwrite',
+    component: DefaultNodeOverwrite,
+  },
+  {
+    name: 'Default Edge Overwrite',
+    path: 'default-edge-overwrite',
+    component: DefaultEdgeOverwrite,
   },
   {
     name: 'Default Nodes',

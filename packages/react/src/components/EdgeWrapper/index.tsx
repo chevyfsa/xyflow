@@ -46,7 +46,7 @@ export function EdgeWrapper<EdgeType extends Edge = Edge>({
   if (EdgeComponent === undefined) {
     onError?.('011', errorMessages['error011'](edgeType));
     edgeType = 'default';
-    EdgeComponent = builtinEdgeTypes.default;
+    EdgeComponent = edgeTypes?.['default'] || builtinEdgeTypes.default;
   }
 
   const isFocusable = !!(edge.focusable || (edgesFocusable && typeof edge.focusable === 'undefined'));
@@ -136,28 +136,28 @@ export function EdgeWrapper<EdgeType extends Edge = Edge>({
 
   const onEdgeDoubleClick = onDoubleClick
     ? (event: React.MouseEvent) => {
-      onDoubleClick(event, { ...edge });
-    }
+        onDoubleClick(event, { ...edge });
+      }
     : undefined;
   const onEdgeContextMenu = onContextMenu
     ? (event: React.MouseEvent) => {
-      onContextMenu(event, { ...edge });
-    }
+        onContextMenu(event, { ...edge });
+      }
     : undefined;
   const onEdgeMouseEnter = onMouseEnter
     ? (event: React.MouseEvent) => {
-      onMouseEnter(event, { ...edge });
-    }
+        onMouseEnter(event, { ...edge });
+      }
     : undefined;
   const onEdgeMouseMove = onMouseMove
     ? (event: React.MouseEvent) => {
-      onMouseMove(event, { ...edge });
-    }
+        onMouseMove(event, { ...edge });
+      }
     : undefined;
   const onEdgeMouseLeave = onMouseLeave
     ? (event: React.MouseEvent) => {
-      onMouseLeave(event, { ...edge });
-    }
+        onMouseLeave(event, { ...edge });
+      }
     : undefined;
 
   const onKeyDown = (event: KeyboardEvent) => {
@@ -198,7 +198,8 @@ export function EdgeWrapper<EdgeType extends Edge = Edge>({
         onMouseLeave={onEdgeMouseLeave}
         onKeyDown={isFocusable ? onKeyDown : undefined}
         tabIndex={isFocusable ? 0 : undefined}
-        role={isFocusable ? 'button' : 'img'}
+        role={edge.ariaRole ?? (isFocusable ? 'group' : 'img')}
+        aria-roledescription="edge"
         data-id={id}
         data-testid={`rf__edge-${id}`}
         aria-label={
@@ -206,6 +207,7 @@ export function EdgeWrapper<EdgeType extends Edge = Edge>({
         }
         aria-describedby={isFocusable ? `${ARIA_EDGE_DESC_KEY}-${rfId}` : undefined}
         ref={edgeRef}
+        {...edge.domAttributes}
       >
         {!reconnecting && (
           <EdgeComponent

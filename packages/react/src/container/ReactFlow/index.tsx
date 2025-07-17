@@ -77,6 +77,7 @@ function ReactFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
     onlyRenderVisibleElements = false,
     selectNodesOnDrag,
     nodesDraggable,
+    autoPanOnNodeFocus,
     nodesConnectable,
     nodesFocusable,
     nodeOrigin = defaultNodeOrigin,
@@ -138,6 +139,7 @@ function ReactFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
     style,
     id,
     nodeDragThreshold,
+    connectionDragThreshold,
     viewport,
     onViewportChange,
     width,
@@ -145,6 +147,7 @@ function ReactFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
     colorMode = 'light',
     debug,
     onScroll,
+    ariaLabelConfig,
     ...rest
   }: ReactFlowProps<NodeType, EdgeType>,
   ref: ForwardedRef<HTMLDivElement>
@@ -170,6 +173,7 @@ function ReactFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
       ref={ref}
       className={cc(['react-flow', className, colorModeClassName])}
       id={id}
+      role="application"
     >
       <Wrapper
         nodes={nodes}
@@ -259,6 +263,7 @@ function ReactFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
           onClickConnectStart={onClickConnectStart}
           onClickConnectEnd={onClickConnectEnd}
           nodesDraggable={nodesDraggable}
+          autoPanOnNodeFocus={autoPanOnNodeFocus}
           nodesConnectable={nodesConnectable}
           nodesFocusable={nodesFocusable}
           edgesFocusable={edgesFocusable}
@@ -302,9 +307,11 @@ function ReactFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
           isValidConnection={isValidConnection}
           selectNodesOnDrag={selectNodesOnDrag}
           nodeDragThreshold={nodeDragThreshold}
+          connectionDragThreshold={connectionDragThreshold}
           onBeforeDelete={onBeforeDelete}
           paneClickDistance={paneClickDistance}
           debug={debug}
+          ariaLabelConfig={ariaLabelConfig}
         />
         <SelectionListener<NodeType, EdgeType> onSelectionChange={onSelectionChange} />
         {children}

@@ -7,6 +7,7 @@ import {
   getNodeDimensions,
   isInputDOMNode,
   nodeHasDimensions,
+  getNodesInside,
 } from '@xyflow/system';
 
 import { useStore, useStoreApi } from '../../hooks/useStore';
@@ -57,7 +58,7 @@ export function NodeWrapper<NodeType extends Node>({
   if (NodeComponent === undefined) {
     onError?.('003', errorMessages['error003'](nodeType));
     nodeType = 'default';
-    NodeComponent = builtinNodeTypes.default;
+    NodeComponent = nodeTypes?.['default'] || builtinNodeTypes.default;
   }
 
   const isDraggable = !!(node.draggable || (nodesDraggable && typeof node.draggable === 'undefined'));
@@ -142,15 +143,40 @@ export function NodeWrapper<NodeType extends Node>({
       // prevent default scrolling behavior on arrow key press when node is moved
       event.preventDefault();
 
+      const { ariaLabelConfig } = store.getState();
+
       store.setState({
-        ariaLiveMessage: `Moved selected node ${event.key
-          .replace('Arrow', '')
-          .toLowerCase()}. New position, x: ${~~internals.positionAbsolute.x}, y: ${~~internals.positionAbsolute.y}`,
+        ariaLiveMessage: ariaLabelConfig['node.a11yDescription.ariaLiveMessage']({
+          direction: event.key.replace('Arrow', '').toLowerCase(),
+          x: ~~internals.positionAbsolute.x,
+          y: ~~internals.positionAbsolute.y,
+        }),
       });
 
       moveSelectedNodes({
         direction: arrowKeyDiffs[event.key],
         factor: event.shiftKey ? 4 : 1,
+      });
+    }
+  };
+
+  const onFocus = () => {
+    if (disableKeyboardA11y || !nodeRef.current?.matches(':focus-visible')) {
+      return;
+    }
+
+    const { transform, width, height, autoPanOnNodeFocus, setCenter } = store.getState();
+
+    if (!autoPanOnNodeFocus) {
+      return;
+    }
+
+    const withinViewport =
+      getNodesInside(new Map([[id, node]]), { x: 0, y: 0, width, height }, transform, true).length > 0;
+
+    if (!withinViewport) {
+      setCenter(node.position.x + nodeDimensions.width / 2, node.position.y + nodeDimensions.height / 2, {
+        zoom: transform[2],
       });
     }
   };
@@ -192,9 +218,12 @@ export function NodeWrapper<NodeType extends Node>({
       onDoubleClick={onDoubleClickHandler}
       onKeyDown={isFocusable ? onKeyDown : undefined}
       tabIndex={isFocusable ? 0 : undefined}
-      role={isFocusable ? 'button' : undefined}
+      onFocus={isFocusable ? onFocus : undefined}
+      role={node.ariaRole ?? (isFocusable ? 'group' : undefined)}
+      aria-roledescription="node"
       aria-describedby={disableKeyboardA11y ? undefined : `${ARIA_NODE_DESC_KEY}-${rfId}`}
       aria-label={node.ariaLabel}
+      {...node.domAttributes}
     >
       <Provider value={id}>
         <NodeComponent

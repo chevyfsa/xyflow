@@ -92,7 +92,7 @@ test.describe('Edges', () => {
       await edge.click();
       await expect(edge).toHaveClass(/selected/);
 
-      await page.keyboard.press('Backspace');
+      await page.keyboard.press('d');
 
       await expect(edge).not.toBeAttached();
     });
@@ -112,10 +112,9 @@ test.describe('Edges', () => {
       await page.mouse.down();
       await page.mouse.up();
 
-      // TODO: times out on webkit
       await expect(edge).toHaveClass(/selected/);
 
-      await page.keyboard.press('Backspace');
+      await page.keyboard.press('d');
       await expect(edge).toBeAttached();
     });
 
@@ -139,12 +138,10 @@ test.describe('Edges', () => {
 
       const edgeBox = await edge.boundingBox();
 
-      //FIXME: Negative values are not working. Investigate further
       await page.mouse.move(edgeBox!.x + edgeBox!.width * 0.5 + 21, edgeBox!.y + edgeBox!.height * 0.5);
       await page.mouse.down();
       await page.mouse.up();
 
-      // TODO: times out on webkit
       await expect(edge).toHaveClass(/selected/);
     });
 
@@ -155,6 +152,27 @@ test.describe('Edges', () => {
 
       await expect(edge).toHaveAttribute('marker-start', "url('#1__type=arrowclosed')");
       await expect(edge).toHaveAttribute('marker-end', "url('#1__type=arrow')");
+    });
+
+    test('z-index', async ({ page }) => {
+      const svg = page.locator('svg', { has: page.locator('[data-id="edge-with-class"]') });
+
+      await expect(svg).toBeAttached();
+      await expect(svg).toHaveCSS('z-index', '0');
+    });
+
+    test('sub flow: normal node to child node, z-index', async ({ page }) => {
+      const svg = page.locator('svg', { has: page.locator('[data-id="subflow-edge"]') });
+
+      await expect(svg).toBeAttached();
+      await expect(svg).toHaveCSS('z-index', '1');
+    });
+
+    test('sub flow: child node to child node, z-index', async ({ page }) => {
+      const svg = page.locator('svg', { has: page.locator('[data-id="subflow-edge-2"]') });
+
+      await expect(svg).toBeAttached();
+      await expect(svg).toHaveCSS('z-index', '1');
     });
   });
 });

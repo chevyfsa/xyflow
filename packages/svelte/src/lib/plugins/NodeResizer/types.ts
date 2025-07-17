@@ -1,3 +1,5 @@
+import type { Snippet } from 'svelte';
+import type { HTMLAttributes } from 'svelte/elements';
 import type {
   ControlPosition,
   ResizeControlVariant,
@@ -34,6 +36,8 @@ export type NodeResizerProps = {
   maxHeight?: number;
   /** Keep aspect ratio when resizing */
   keepAspectRatio?: boolean;
+  /** Automatically scale the node when resizing */
+  autoScale?: boolean;
   /** Callback to determine if node should resize */
   shouldResize?: ShouldResize;
   /** Callback called when resizing starts */
@@ -42,7 +46,7 @@ export type NodeResizerProps = {
   onResize?: OnResize;
   /** Callback called when resizing ends */
   onResizeEnd?: OnResizeEnd;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
 export type ResizeControlProps = Pick<
   NodeResizerProps,
@@ -53,6 +57,7 @@ export type ResizeControlProps = Pick<
   | 'maxWidth'
   | 'maxHeight'
   | 'keepAspectRatio'
+  | 'autoScale'
   | 'shouldResize'
   | 'onResizeStart'
   | 'onResize'
@@ -67,6 +72,5 @@ export type ResizeControlProps = Pick<
    * @example ResizeControlVariant.Handle, ResizeControlVariant.Line
    */
   variant?: ResizeControlVariant;
-  class?: string;
-  style?: string;
-};
+  children?: Snippet;
+} & HTMLAttributes<HTMLDivElement>;

@@ -378,7 +378,11 @@ export async function fitViewport<
     options?.padding ?? 0.1
   );
 
-  await panZoom.setViewport(viewport, { duration: options?.duration });
+  await panZoom.setViewport(viewport, {
+    duration: options?.duration,
+    ease: options?.ease,
+    interpolate: options?.interpolate,
+  });
 
   return Promise.resolve(true);
 }
@@ -409,7 +413,7 @@ export function calculateNodePosition<NodeType extends NodeBase>({
   const { x: parentX, y: parentY } = parentNode ? parentNode.internals.positionAbsolute : { x: 0, y: 0 };
 
   const origin = node.origin ?? nodeOrigin;
-  let extent = nodeExtent;
+  let extent = node.extent || nodeExtent;
 
   if (node.extent === 'parent' && !node.expandParent) {
     if (!parentNode) {

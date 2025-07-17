@@ -10,6 +10,7 @@ import {
   NodeOrigin,
   initialConnection,
   CoordinateExtent,
+  defaultAriaLabelConfig,
 } from '@xyflow/system';
 
 import type { Edge, FitViewOptions, InternalNode, Node, ReactFlowStore } from '../types';
@@ -106,6 +107,7 @@ const getInitialState = ({
     noPanClassName: 'nopan',
     nodeOrigin: storeNodeOrigin,
     nodeDragThreshold: 1,
+    connectionDragThreshold: 1,
 
     snapGrid: [15, 15],
     snapToGrid: false,
@@ -133,7 +135,9 @@ const getInitialState = ({
     ariaLiveMessage: '',
     autoPanOnConnect: true,
     autoPanOnNodeDrag: true,
+    autoPanOnNodeFocus: true,
     autoPanSpeed: 15,
+
     connectionRadius: 20,
     onError: devWarn,
     isValidConnection: undefined,
@@ -141,6 +145,7 @@ const getInitialState = ({
 
     lib: 'react',
     debug: false,
+    ariaLabelConfig: defaultAriaLabelConfig,
   };
 };
 

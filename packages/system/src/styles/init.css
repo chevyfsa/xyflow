@@ -55,7 +55,7 @@
 }
 
 .xy-flow__background {
-  background-color: var(--xy-background-color, var(--xy-background-color-props, var(--xy-background-color-default)));
+  background-color: var(--xy-background-color-props, var(--xy-background-color, var(--xy-background-color-default)));
 }
 
 .xy-flow__container {
@@ -265,6 +265,10 @@ svg.xy-flow__connectionline {
   pointer-events: all;
 }
 
+.xy-flow__pane.selection .xy-flow__panel {
+  pointer-events: none;
+}
+
 .xy-flow__panel {
   position: absolute;
   z-index: 5;
@@ -282,7 +286,7 @@ svg.xy-flow__connectionline {
   &.bottom {
     &.center {
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-15px) translateX(-50%);
     }
   }
 
@@ -298,7 +302,7 @@ svg.xy-flow__connectionline {
   &.right {
     &.center {
       top: 50%;
-      transform: translateY(-50%);
+      transform: translateY(-15px) translateY(-50%);
     }
   }
 }

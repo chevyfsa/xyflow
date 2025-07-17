@@ -4,22 +4,31 @@
 		Position,
 		useNodeConnections,
 		useNodesData,
-		type NodeProps
+		type NodeProps,
+		type Node
 	} from '@xyflow/svelte';
 	import { isTextNode, type MyNode } from './+page.svelte';
 
-	type $$Props = NodeProps;
-
-	export let id: $$Props['id'];
-	$$restProps;
+	let { id }: NodeProps = $props();
 
 	const connections = useNodeConnections({
 		id: id,
 		handleType: 'target'
 	});
 
-	$: nodeData = useNodesData<MyNode>($connections.map((connection) => connection.source));
-	$: textNodes = $nodeData.filter(isTextNode);
+	useNodeConnections({
+		onConnect: (connection) => {
+			console.log('Connection made:', connection);
+		},
+		onDisconnect: (connection) => {
+			console.log('Connection disconnected:', connection);
+		}
+	});
+
+	let nodeData = $derived(
+		useNodesData<MyNode>(connections.current.map((connection) => connection.source))
+	);
+	let textNodes = $derived(nodeData.current.filter(isTextNode));
 </script>
 
 <div class="custom">

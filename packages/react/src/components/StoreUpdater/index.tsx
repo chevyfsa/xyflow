@@ -5,7 +5,7 @@
  */
 import { useEffect, useRef } from 'react';
 import { shallow } from 'zustand/shallow';
-import { infiniteExtent, type CoordinateExtent } from '@xyflow/system';
+import { infiniteExtent, type CoordinateExtent, mergeAriaLabelConfig, AriaLabelConfig } from '@xyflow/system';
 
 import { useStore, useStoreApi } from '../../hooks/useStore';
 import type { Node, Edge, ReactFlowState, ReactFlowProps, FitViewOptions } from '../../types';
@@ -23,6 +23,7 @@ const reactFlowFieldsToTrack = [
   'onClickConnectStart',
   'onClickConnectEnd',
   'nodesDraggable',
+  'autoPanOnNodeFocus',
   'nodesConnectable',
   'nodesFocusable',
   'edgesFocusable',
@@ -64,10 +65,12 @@ const reactFlowFieldsToTrack = [
   'isValidConnection',
   'selectNodesOnDrag',
   'nodeDragThreshold',
+  'connectionDragThreshold',
   'onBeforeDelete',
   'debug',
   'autoPanSpeed',
   'paneClickDistance',
+  'ariaLabelConfig',
 ] as const;
 
 type ReactFlowFieldsToTrack = (typeof reactFlowFieldsToTrack)[number];
@@ -153,6 +156,8 @@ export function StoreUpdater<NodeType extends Node = Node, EdgeType extends Edge
         else if (fieldName === 'translateExtent') setTranslateExtent(fieldValue as CoordinateExtent);
         else if (fieldName === 'nodeExtent') setNodeExtent(fieldValue as CoordinateExtent);
         else if (fieldName === 'paneClickDistance') setPaneClickDistance(fieldValue as number);
+        else if (fieldName === 'ariaLabelConfig')
+          store.setState({ ariaLabelConfig: mergeAriaLabelConfig(fieldValue as AriaLabelConfig) });
         // Renamed fields
         else if (fieldName === 'fitView') store.setState({ fitViewQueued: fieldValue as boolean });
         else if (fieldName === 'fitViewOptions') store.setState({ fitViewOptions: fieldValue as FitViewOptions });

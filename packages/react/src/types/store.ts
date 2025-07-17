@@ -28,6 +28,8 @@ import {
   type NodeChange,
   type EdgeChange,
   type ParentLookup,
+  type AriaLabelConfig,
+  SetCenter,
 } from '@xyflow/system';
 
 import type {
@@ -67,7 +69,6 @@ export type ReactFlowStore<NodeType extends Node = Node, EdgeType extends Edge =
   domNode: HTMLDivElement | null;
   paneDragging: boolean;
   noPanClassName: string;
-
   panZoom: PanZoomInstance | null;
   minZoom: number;
   maxZoom: number;
@@ -75,6 +76,7 @@ export type ReactFlowStore<NodeType extends Node = Node, EdgeType extends Edge =
   nodeExtent: CoordinateExtent;
   nodeOrigin: NodeOrigin;
   nodeDragThreshold: number;
+  connectionDragThreshold: number;
 
   nodesSelectionActive: boolean;
   userSelectionActive: boolean;
@@ -88,6 +90,7 @@ export type ReactFlowStore<NodeType extends Node = Node, EdgeType extends Edge =
   snapGrid: SnapGrid;
 
   nodesDraggable: boolean;
+  autoPanOnNodeFocus: boolean;
   nodesConnectable: boolean;
   nodesFocusable: boolean;
   edgesFocusable: boolean;
@@ -148,6 +151,7 @@ export type ReactFlowStore<NodeType extends Node = Node, EdgeType extends Edge =
 
   lib: string;
   debug: boolean;
+  ariaLabelConfig: AriaLabelConfig;
 };
 
 export type ReactFlowActions<NodeType extends Node, EdgeType extends Edge> = {
@@ -170,6 +174,7 @@ export type ReactFlowActions<NodeType extends Node, EdgeType extends Edge> = {
   triggerNodeChanges: (changes: NodeChange<NodeType>[]) => void;
   triggerEdgeChanges: (changes: EdgeChange<EdgeType>[]) => void;
   panBy: PanBy;
+  setCenter: SetCenter;
   setPaneClickDistance: (distance: number) => void;
 };
 
