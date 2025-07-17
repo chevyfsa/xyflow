@@ -51,8 +51,9 @@
     "access": "public"
   },
   "dependencies": {
+    "@xyflow/system": "workspace:*",
+    "classcat": "^5.0.4"
     "@svelte-put/shortcut": "^4.1.0",
-    "@xyflow/system": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
